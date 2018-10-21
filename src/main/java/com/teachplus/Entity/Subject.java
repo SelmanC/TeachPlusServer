@@ -4,12 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
-import java.util.Collection;
 
 @Entity
-@Table(name = "workspaces")
+@Table(name = "subjects")
 @JsonIgnoreProperties(value={ "hibernateLazyInitializer", "handler" }, allowSetters= true)
-public class Workspace {
+public class Subject {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -17,14 +16,18 @@ public class Workspace {
     private long id;
 
     @NonNull
-    @Column(unique = true, length=30)
+    @Column(length=30)
     private String name;
 
-    public Workspace() { }
+    public Subject() {}
 
-    public Workspace(long id, String name) {
+    public Subject(long id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
     public long getId() {
@@ -42,5 +45,4 @@ public class Workspace {
     public void setName(String name) {
         this.name = name;
     }
-
 }

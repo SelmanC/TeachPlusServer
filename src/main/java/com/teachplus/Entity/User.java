@@ -6,16 +6,15 @@ import org.springframework.lang.NonNull;
 import javax.persistence.*;
 import java.util.Collection;
 
-//@JsonIdentityInfo(generator= ObjectIdGenerators.IntSequenceGenerator.class, property="@id")
 @Entity
 @Table(name = "users")
-@JsonIgnoreProperties(value={ "children", "parents", "password", "hibernateLazyInitializer", "handler" }, allowSetters= true)
+@JsonIgnoreProperties(value={ "children", "parents", "groupMembers", "password", "hibernateLazyInitializer", "handler" }, allowSetters= true)
 public class User {
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @NonNull
     @Column(length=30)
@@ -42,6 +41,12 @@ public class User {
     @JoinColumn(name = "workspace_id")
     private Workspace workspace;
 
+    private String strasse;
+
+    private String ort;
+
+    private String land;
+
     @ManyToMany
     @JoinTable(name = "family", joinColumns = {
             @JoinColumn(name = "parent", referencedColumnName = "id", nullable = false)}, inverseJoinColumns = {
@@ -51,16 +56,13 @@ public class User {
     @ManyToMany(mappedBy = "children")
     private Collection<User> parents;
 
-    private String strasse;
-
-    private String ort;
-
-    private String land;
+    @OneToMany(mappedBy = "userMember")
+    private Collection<GroupMember> groupMembers;
 
     public User() {
     }
 
-    public User(long id, String name, String lastname, String email, String password, String role, String strasse, String ort, String land, Workspace workspace, Collection<User> parents, Collection<User> children) {
+    public User(long id, String name, String lastname, String email, String password, String role, String strasse, String ort, String land, Workspace workspace, Collection<User> parents, Collection<User> children, Collection<GroupMember> groupMembers) {
         this.id = id;
         this.name = name;
         this.lastname = lastname;
@@ -73,13 +75,14 @@ public class User {
         this.land = land;
         this.parents = parents;
         this.children = children;
+        this.groupMembers = groupMembers;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -171,4 +174,11 @@ public class User {
         this.children = children;
     }
 
+    public Collection<GroupMember> getGroupMembers() {
+        return groupMembers;
+    }
+
+    public void setGroupMembers(Collection<GroupMember> groupMembers) {
+        this.groupMembers = groupMembers;
+    }
 }

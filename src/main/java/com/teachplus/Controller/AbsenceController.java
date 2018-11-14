@@ -30,7 +30,6 @@ public class AbsenceController {
     @GetMapping(value="/{id}/data", produces = { "application/json" })
     public ResponseEntity getAbsenceDataByAbsenceList(@PathVariable("id") Long id, @RequestParam("month") Integer month) {
         Collection<AbsenceData> absenceData = absenceService.getAbsenceDataByAbsenceList(id, month);
-        System.out.println("getAbsenceDataByAbsenceList: " + absenceData.size());
         if (absenceData == null) {
             return ResponseEntity.notFound().build();
         }

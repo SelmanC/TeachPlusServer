@@ -28,7 +28,7 @@ public class Group {
     @OneToMany(mappedBy = "groupMember")
     private Collection<GroupMember> groupMember;
 
-    @OneToMany(mappedBy = "groupClass", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "groupClass", cascade = CascadeType.REMOVE)
     private Collection<AbsenceList> absenceLists;
 
     @Value("${some.key:group}")
@@ -88,6 +88,11 @@ public class Group {
     }
 
     public void setAbsenceLists(Collection<AbsenceList> absenceLists) {
-        this.absenceLists = absenceLists;
+        if(absenceLists == null) {
+            this.absenceLists.clear();
+        }
+        else {
+            this.absenceLists.addAll(absenceLists);
+        }
     }
 }
